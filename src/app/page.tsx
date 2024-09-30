@@ -1,101 +1,104 @@
-import Image from "next/image";
+'use client'
 
-export default function Home() {
+import { useState } from 'react'
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import Image from 'next/image'
+
+// Dummy article data
+const articles = [
+  {
+    id: 1,
+    title: "Getting Started with Next.js",
+    image: "/placeholder.svg?height=200&width=300",
+    content: "Next.js is a powerful React framework that makes it easy to build server-side rendered and statically generated web applications. In this article, we'll explore the basics of Next.js and how to get started with your first project."
+  },
+  {
+    id: 2,
+    title: "Understanding React Hooks",
+    image: "/placeholder.svg?height=200&width=300",
+    content: "React Hooks have revolutionized the way we write React components. They allow us to use state and other React features without writing a class. This article dives deep into the most commonly used hooks and how they can simplify your React code."
+  },
+  {
+    id: 3,
+    title: "Mastering Tailwind CSS",
+    image: "/placeholder.svg?height=200&width=300",
+    content: "Tailwind CSS is a utility-first CSS framework that can speed up your development process significantly. In this guide, we'll cover the core concepts of Tailwind and show you how to create beautiful, responsive designs with minimal custom CSS."
+  }
+]
+
+export default function BlogLayout() {
+  const [selectedArticle, setSelectedArticle] = useState(articles[0])
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-8">My Simple Blog</h1>
+      <div className="flex flex-col md:flex-row gap-8">
+        {/* Left sidebar / Navigation */}
+        <aside className="w-full md:w-1/4">
+          <div className="mb-6">
+            <Input type="search" placeholder="Search articles..." className="w-full" />
+          </div>
+          <nav>
+            <h2 className="text-xl font-semibold mb-4">Articles</h2>
+            <ul className="space-y-4">
+              {articles.map((article) => (
+                <li key={article.id}>
+                  <Button
+                    variant="ghost"
+                    className="w-full justify-start text-left"
+                    onClick={() => setSelectedArticle(article)}
+                  >
+                    {article.title}
+                  </Button>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </aside>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+        {/* Main content area */}
+        <main className="w-full md:w-1/2">
+          <article className="bg-white p-6 rounded-lg shadow-md">
+            <h2 className="text-2xl font-bold mb-4">{selectedArticle.title}</h2>
             <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+              src={selectedArticle.image}
+              alt={selectedArticle.title}
+              width={300}
+              height={200}
+              className="w-full h-auto mb-4 rounded-md"
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+            <p className="text-gray-700">{selectedArticle.content}</p>
+          </article>
+        </main>
+
+        {/* Right panel */}
+        <aside className="w-full md:w-1/4">
+          <div className="mb-8">
+            <h2 className="text-xl font-semibold mb-4">Categories</h2>
+            <div className="flex flex-wrap gap-2">
+              {["Web Development", "JavaScript", "React", "CSS"].map((category) => (
+                <Button key={category} variant="outline" size="sm">
+                  {category}
+                </Button>
+              ))}
+            </div>
+          </div>
+          <div>
+            <h2 className="text-xl font-semibold mb-4">Tags</h2>
+            <div className="flex flex-wrap gap-2">
+              {["nextjs", "react", "tailwind", "typescript"].map((tag) => (
+                <span
+                  key={tag}
+                  className="px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-sm"
+                >
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          </div>
+        </aside>
+      </div>
     </div>
-  );
+  )
 }
